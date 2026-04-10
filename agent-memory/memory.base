@@ -1,0 +1,25 @@
+filters:
+  and:
+    - file.inFolder("agent-memory")
+    - file.ext == "md"
+    - status == "active"
+properties:
+  summary:
+    displayName: Summary
+  type:
+    displayName: Type
+  date:
+    displayName: Date
+  tags:
+    displayName: Tags
+views:
+  - type: table
+    name: All Memories
+    groupBy:
+      property: type
+      direction: ASC
+    order:
+      - summary
+      - type
+      - date
+      - tags

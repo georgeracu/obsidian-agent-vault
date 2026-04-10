@@ -1,0 +1,19 @@
+filters:
+  and:
+    - file.inFolder("agent-memory")
+    - file.ext == "md"
+    - status == "stale"
+properties:
+  summary:
+    displayName: Summary
+  type:
+    displayName: Type
+  date:
+    displayName: Date
+views:
+  - type: table
+    name: Pruning Queue
+    order:
+      - summary
+      - type
+      - date

@@ -1,0 +1,11 @@
+# Obsidian workspace state (machine-specific, do not commit)
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache
+
+# Obsidian trash
+.obsidian/.trash/
+
+# macOS
+.DS_Store
+**/.DS_Store
