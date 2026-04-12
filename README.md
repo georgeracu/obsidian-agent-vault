@@ -73,7 +73,7 @@ The agent reads the protocol, searches for relevant memories using `qmd`, loads 
 
 ## Links
 
-- Blog post: *(coming soon)*
+- Blog post: [AI Agents That Remember: Building a Second Brain for Claude and Gemini](https://open.substack.com/pub/georgeracu/p/ai-agents-that-remember-building?utm_campaign=post-expanded-share&utm_medium=web)
 - qmd: [github.com/tobi/qmd](https://github.com/tobi/qmd)
 - Obsidian: [obsidian.md](https://obsidian.md)
 - Install Obsidian skills: `npx skills add git@github.com:kepano/obsidian-skills.git`
