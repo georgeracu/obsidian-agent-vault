@@ -1,4 +1,4 @@
-## First-Time Setup
+# First-Time Setup
 
 Before using this vault with any AI agent, find-and-replace the following placeholders throughout this file and `Resources/AI & Agents/agent-memory-tutorial.md`:
 
@@ -9,7 +9,7 @@ Before using this vault with any AI agent, find-and-replace the following placeh
 
 ---
 
-# Agent Memory Protocol
+## Agent Memory Protocol
 
 This file is the single entry point for all AI agents working in this vault.
 Read it at the start of every session.
@@ -19,6 +19,7 @@ Read it at the start of every session.
 ## Hard Constraints
 
 **CRITICAL:**
+
 1. **Scope:** You are ONLY permitted to modify files and directories within "<your-vault-name>". Do NOT change anything outside of this vault.
 2. **Vault Targeting:** All `obsidian` CLI commands MUST target the vault "<your-vault-name>" by using the `vault="<your-vault-name>"` parameter.
 3. **Tooling:** Use ONLY `obsidian` CLI and `qmd` for all vault interactions. Do NOT use raw file I/O, direct Bash file commands (`cat`, `echo`, `sed`, `awk`, `rm`, etc.), or any file system tools outside of `obsidian` CLI. Every read, write, create, and update must go through `obsidian` CLI.
@@ -84,7 +85,7 @@ If an entry is outdated, superseded, or no longer relevant:
 
 ## Directory Reference
 
-```
+```bash
 agent-memory/
 ├── memory.base       ← Live index of all active entries (Obsidian Bases)
 ├── stale.base        ← Pruning queue — entries with status: stale
@@ -97,6 +98,19 @@ agent-memory/
 
 ---
 
+## Session End
+
+When the user says to wrap up, end, or close the session, use the **wrap-up** skill. It handles:
+
+1. Writing a session snapshot to `agent-memory/snapshots/`
+2. Marking superseded snapshots as stale
+3. Refreshing the `qmd` search index (`qmd update && qmd embed`)
+4. Surfacing open items to the user
+
+The `qmd update && qmd embed` step must also be run during a session after any batch of vault note changes (create, update, delete) to keep the search index current.
+
+---
+
 ## Tooling Reference
 
 | Task                                 | Tool                                       |
@@ -105,5 +119,7 @@ agent-memory/
 | Read a specific entry                | `obsidian` CLI read                        |
 | Create a new memory entry            | `obsidian` CLI create note                 |
 | Update frontmatter (e.g. flag stale) | `obsidian` CLI update properties           |
+| Refresh search index after changes   | `qmd update && qmd embed`                  |
+| End a session                        | **wrap-up** skill                          |
 | Browse all active memories           | Obsidian — open `agent-memory/memory.base` |
 | Review pruning candidates            | Obsidian — open `agent-memory/stale.base`  |
