@@ -1,6 +1,11 @@
 ---
 name: obsidian-bases
 description: Create and edit Obsidian Bases (.base files) with views, filters, formulas, and summaries. Use when working with .base files, creating database-like views of notes, or when the user mentions Bases, table views, card views, filters, or formulas in Obsidian.
+license: MIT
+metadata:
+  upstream: https://github.com/kepano/obsidian-skills
+  upstream_license: "MIT (c) 2026 Steph Ango (@kepano)"
+  modified_by: George Racu
 ---
 
 # Obsidian Bases Skill
@@ -487,6 +492,64 @@ order:
 formulas:
   total: "price * quantity"
 ```
+
+## Common Vault Gotchas
+
+### `file.inFolder()` is case-sensitive
+
+A Bases view shows zero results even though the matching notes clearly exist and the filter looks correct:
+
+```yaml
+filters:
+  and:
+    - file.inFolder("resources/japanese/cards")
+    - type == "japanese-card"
+```
+
+`file.inFolder(path)` does an **exact case-sensitive prefix match** against Obsidian's stored path strings. macOS APFS is case-preserving but case-insensitive at the filesystem layer, so the folder appears both as `Resources/Japanese/cards/` and `resources/japanese/cards/` to shell tools — but Obsidian's vault index stores **one canonical casing** (whichever was registered first).
+
+The same trap fires for `app.vault.getAbstractFileByPath("...")` (returns `null`) and any direct path comparison against `TFile.path`. Wikilinks and embeds resolve case-insensitively (Obsidian's link resolver handles it), so this only bites when you're writing **filter logic or JS code** that touches paths directly.
+
+**Fix.** Never assume folder casing. Read the canonical path from Obsidian first:
+
+```js
+const sample = app.vault.getFiles().find((x) =>
+  x.path.toLowerCase().includes("japanese/cards/")
+);
+const folderPath = sample.path.substring(0, sample.path.lastIndexOf("/"));
+console.log(folderPath);   // canonical casing
+```
+
+Then write the filter with that exact casing:
+
+```yaml
+filters:
+  and:
+    - file.inFolder("Resources/Japanese/cards")   # canonical, NOT lowercase
+```
+
+If a Bases view that should match comes up empty, the first debugging step is to print actual stored paths via `app.vault.getFiles().filter(...)` and compare character-by-character against the filter string.
+
+### Orphan frontmatter — files with bare `tags:`
+
+Notes whose frontmatter contains only `tags:` (no values, no other fields) are pre-convention orphans, typically migrated from an older structure before the frontmatter schema was established. They will not appear in Bases views that filter on schema properties like `type`, `status`, or `date`.
+
+**Fix.** When found in `Posts/`, add the full schema:
+
+```yaml
+---
+title: "Post Title"
+date: YYYY-MM-DD
+platform: substack|linkedin|x
+post_slug: post-slug-here
+status: draft|published
+published_date: ""
+url: ""
+tags: [content]
+---
+```
+
+Use today's date for `date:` if the original draft date is unknown. Set `status: draft` unless you can confirm it was published. Same principle for other folders with their own schema.
 
 ## References
 
