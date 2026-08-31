@@ -1,15 +1,15 @@
 ---
 name: wrap-up
-description: Use at the end of a vault session, or at a mid-session checkpoint, to write a snapshot, promote durable lessons into knowledge entries, flag superseded snapshots stale, refresh the qmd index, and surface open items to the user.
+description: Use at the end of a vault session, or at a mid-session checkpoint, to write a snapshot, promote durable lessons into knowledge entries, flag superseded snapshots stale, refresh hot.md and the qmd index, and surface open items to the user.
 ---
 
 # Session Wrap-Up
 
-End every session with a clean handoff. Five steps, in order.
+End every session with a clean handoff. Six steps, in order.
 
 ## When to run this
 
-Do not wait for the user to type `/wrap-up`. The sessions that lose the most work are the long ones that never reach a tidy ending, as context runs out or the laptop closes mid-task. Run at least steps 1 and 3 when any of these hits, whichever comes first:
+Do not wait for the user to type `/wrap-up`. The sessions that lose the most work are the long ones that never reach a tidy ending, as context runs out or the laptop closes mid-task. Run at least steps 1, 3 and 4 when any of these hits, whichever comes first:
 
 - roughly 100 tool calls into the session
 - a context compaction has just occurred
@@ -27,6 +27,12 @@ Create `agent-memory/snapshots/YYYY-MM-DD-session-end-<topic-slug>.md` — today
 
 ```bash
 obsidian vault="My Vault" create path="agent-memory/snapshots/YYYY-MM-DD-session-end-<topic-slug>.md" content="<content>" silent
+```
+
+For anything longer than a couple of lines, do not fight shell quoting in `content=`. Write the payload to a temporary file first, then create the note from it in one `eval`:
+
+```bash
+obsidian vault="My Vault" eval code='(async()=>{const fs=require("fs");const c=fs.readFileSync("/tmp/payload.md","utf8");await app.vault.create("agent-memory/snapshots/<name>.md",c);return "created";})()'
 ```
 
 Pass `path=` only. Do **not** add `name=`: supplying both mints a duplicate note, and a `name=` containing `/` fails outright with `name cannot contain "/"`.
@@ -108,7 +114,23 @@ obsidian vault="My Vault" property:set file="<snapshot-name>" name="status" valu
 
 Do NOT mark the new session-end snapshot stale.
 
-## Step 4: Update qmd index
+**Retention.** Stale snapshots older than 90 days have served their purpose. Roughly monthly, list them (path + date) and propose deletion as a batch; deletion is destructive, so it happens only with explicit approval, via the CLI. Knowledge entries are exempt — they stay until the human prunes them through `stale.base`.
+
+## Step 4: Refresh hot.md
+
+`agent-memory/hot.md` is the sub-500-word orientation cache AGENTS.md reads at session start. Rewrite it in place — replace the whole body, never append; it is a cache, not a log:
+
+- `## Now` — active work threads, three to six bullets
+- `## Standing` — the few constraints worth re-reading cold
+- `## Pointers` — a wikilink to today's snapshot plus two or three key entries
+
+Set `date:` to today. Keep the body under 500 words; cut the oldest Now bullets before anything else. Use the payload pattern from step 1 with `app.vault.modify` (or recreate the file if missing):
+
+```bash
+obsidian vault="My Vault" eval code='(async()=>{const fs=require("fs");const c=fs.readFileSync("/tmp/hot.md","utf8");const f=app.vault.getAbstractFileByPath("agent-memory/hot.md");if(f){await app.vault.modify(f,c);}else{await app.vault.create("agent-memory/hot.md",c);}return "refreshed";})()'
+```
+
+## Step 5: Update qmd index
 
 Refresh the search index so future sessions have up-to-date embeddings. Run after any vault notes were created, updated, or deleted:
 
@@ -116,7 +138,7 @@ Refresh the search index so future sessions have up-to-date embeddings. Run afte
 qmd update && qmd embed
 ```
 
-## Step 5: Surface open items to the user
+## Step 6: Surface open items to the user
 
 End with a short, scannable message covering:
 
@@ -140,4 +162,6 @@ Keep it terse. No trailing summary of work the user just watched.
 | Trusting a silent `eval` return as success | Verify with the status-count query, then spot-check one file |
 | Writing a knowledge entry with no `## Related` | Cross-linking is required; verify each link resolves |
 | Putting vault facts in the external auto-memory | Vault context lives in `agent-memory/`; only cross-project tool footguns go in both |
+| Appending to `hot.md` | It is a cache, not a log — replace the whole body |
+| Skipping the `hot.md` refresh | Session start reads it; a stale hot misleads the next session |
 | Skipping `qmd update && qmd embed` after vault changes | Future sessions will search stale content |

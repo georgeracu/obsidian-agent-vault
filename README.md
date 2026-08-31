@@ -64,6 +64,8 @@ Agent skills are stored in `.agents/skills/` and extend what AI agents can do in
 | `qmd` | Search your vault semantically and by keyword using `qmd` |
 | `defuddle` | Extract clean markdown from web pages, stripping clutter and navigation |
 | `json-canvas` | Create and edit JSON Canvas files (`.canvas`) for visual maps and flowcharts |
+| `wrap-up` | Session-end handoff — snapshot, durable lessons, hot.md refresh, index update — original work for this template |
+| `memory-lint` | Read-only health check over `agent-memory/` — schema drift, dangling links, orphans, staleness — original work for this template |
 
 ## Using with AI agents
 

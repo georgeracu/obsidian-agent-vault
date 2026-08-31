@@ -28,9 +28,10 @@ Read it at the start of every session.
 
 ## Session Start
 
-1. Use `qmd` to search `agent-memory/` for context relevant to your current task
-2. Read matching entries with `obsidian` CLI
-3. If resuming prior work, check `agent-memory/snapshots/` for a recent snapshot
+1. Read `agent-memory/hot.md` silently — a sub-500-word orientation cache refreshed at every wrap-up. It is orientation, not evidence: verify anything load-bearing against the notes it links before acting on it. If it is missing or dated before the newest active snapshot, treat it as stale and rebuild it at the next wrap-up.
+2. Use `qmd` to search `agent-memory/` for context relevant to your current task
+3. Read matching entries with `obsidian` CLI
+4. If resuming prior work, check `agent-memory/snapshots/` for a recent snapshot
 
 ---
 
@@ -87,6 +88,7 @@ If an entry is outdated, superseded, or no longer relevant:
 
 ```bash
 agent-memory/
+├── hot.md            ← Session-start orientation cache, refreshed at every wrap-up
 ├── memory.base       ← Live index of all active entries (Obsidian Bases)
 ├── stale.base        ← Pruning queue — entries with status: stale
 ├── context/          ← Active project/vault context notes
@@ -104,8 +106,9 @@ When the user says to wrap up, end, or close the session, use the **wrap-up** sk
 
 1. Writing a session snapshot to `agent-memory/snapshots/`
 2. Marking superseded snapshots as stale
-3. Refreshing the `qmd` search index (`qmd update && qmd embed`)
-4. Surfacing open items to the user
+3. Refreshing `agent-memory/hot.md`, the session-start orientation cache
+4. Refreshing the `qmd` search index (`qmd update && qmd embed`)
+5. Surfacing open items to the user
 
 The `qmd update && qmd embed` step must also be run during a session after any batch of vault note changes (create, update, delete) to keep the search index current.
 
