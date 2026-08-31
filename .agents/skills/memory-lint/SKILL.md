@@ -62,8 +62,9 @@ Enumerate and read the corpus with qmd (`qmd ls <your-collection-name>/agent-mem
     if (!fm.date) issues.push("missing date");
     if (!fm.summary) issues.push("missing summary");
     if (fm.status && fm.status !== "active" && fm.status !== "stale") issues.push("status '"+fm.status+"'");
-    if (/^tags:\s*"\[/m.test(body)) issues.push("quoted-array tags");
-    else if (/^tags:\s*\[/m.test(body)) issues.push("flow-array tags");
+    const fmBlock = (body.match(/^---\n[\s\S]*?\n---/) || [""])[0];
+    if (/^tags:\s*"\[/m.test(fmBlock)) issues.push("quoted-array tags");
+    else if (/^tags:\s*\[/m.test(fmBlock)) issues.push("flow-array tags");
     if (issues.length) drift.push(f.path + " — " + issues.join(", "));
     let working = 0;
     for (const l of (c.links || [])) {
