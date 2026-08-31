@@ -60,7 +60,6 @@ Agent skills are stored in `.agents/skills/` and extend what AI agents can do in
 | `obsidian-cli` | Interact with Obsidian vaults from the command line — read, create, search, and manage notes |
 | `obsidian-bases` | Create and edit Obsidian Bases (`.base` files) with filters, formulas, and database-style views |
 | `obsidian-markdown` | Write Obsidian Flavored Markdown — wikilinks, embeds, callouts, properties, and more |
-| `second-brain` | Personal knowledge management workflows combining GTD, Zettelkasten, and PARA |
 | `qmd` | Search your vault semantically and by keyword using `qmd` |
 | `defuddle` | Extract clean markdown from web pages, stripping clutter and navigation |
 | `json-canvas` | Create and edit JSON Canvas files (`.canvas`) for visual maps and flowcharts |
@@ -79,3 +78,7 @@ The agent reads the protocol, searches for relevant memories using `qmd`, loads 
 - Install Obsidian skills: `npx skills add git@github.com:kepano/obsidian-skills.git`
 - Install qmd skill: `npx skills add https://github.com/tobi/qmd`
 - Install second-brain skill: `npx skills add https://github.com/sean-esk/second-brain-gtd`
+
+## Licensing
+
+This template is MIT licensed (see [LICENSE](LICENSE)). Bundled third-party skills keep their upstream licences and copyright notices — see [THIRD-PARTY-LICENSES.md](THIRD-PARTY-LICENSES.md), with per-skill provenance and content hashes in [skills-lock.json](skills-lock.json).

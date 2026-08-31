@@ -30,11 +30,6 @@
       "source": "tobi/qmd",
       "sourceType": "github",
       "computedHash": "d7109d58f721a0bf59620c69b6ae073c60dde85e971012d95a5e410002f28c64"
-    },
-    "second-brain": {
-      "source": "sean-esk/second-brain-gtd",
-      "sourceType": "github",
-      "computedHash": "7eb04b39683bb902ad854dcf1d2685392946ec0f8f51616f38cedb33a92c0084"
     }
   }
 }
