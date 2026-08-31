@@ -60,6 +60,7 @@ Agent skills are stored in `.agents/skills/` and extend what AI agents can do in
 | `obsidian-cli` | Interact with Obsidian vaults from the command line — read, create, search, and manage notes |
 | `obsidian-bases` | Create and edit Obsidian Bases (`.base` files) with filters, formulas, and database-style views |
 | `obsidian-markdown` | Write Obsidian Flavored Markdown — wikilinks, embeds, callouts, properties, and more |
+| `second-brain` | GTD capture, inbox processing, daily planning and closeout — original work for this template |
 | `qmd` | Search your vault semantically and by keyword using `qmd` |
 | `defuddle` | Extract clean markdown from web pages, stripping clutter and navigation |
 | `json-canvas` | Create and edit JSON Canvas files (`.canvas`) for visual maps and flowcharts |
@@ -77,7 +78,7 @@ The agent reads the protocol, searches for relevant memories using `qmd`, loads 
 - Obsidian: [obsidian.md](https://obsidian.md)
 - Install Obsidian skills: `npx skills add git@github.com:kepano/obsidian-skills.git`
 - Install qmd skill: `npx skills add https://github.com/tobi/qmd`
-- Install second-brain skill: `npx skills add https://github.com/sean-esk/second-brain-gtd`
+- second-brain workflow inspiration: [sean-esk/second-brain-gtd](https://github.com/sean-esk/second-brain-gtd); the compilation-value gate and untrusted-content rules draw on [AgriciDaniel/claude-obsidian](https://github.com/AgriciDaniel/claude-obsidian) (MIT), and the "timeless, dated, or a pointer" rule on [eugeniughelbur/obsidian-second-brain](https://github.com/eugeniughelbur/obsidian-second-brain) (MIT)
 
 ## Licensing
 
